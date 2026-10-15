@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import API from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
@@ -8,6 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -17,8 +17,8 @@ export default function Login() {
     }
   }, [navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError("");
 
     if (!email.trim() || !password) {
@@ -55,60 +55,118 @@ export default function Login() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "100px",
-      }}
-    >
-      <h2>Login</h2>
+    <main className="login-page">
+      <header className="login-header">
+        <Link to="/" className="login-brand">
+          <span className="login-brand-icon">✓</span>
+          <span>worktodo</span>
+        </Link>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "250px",
-        }}
-      >
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          autoComplete="email"
-          required
-          disabled={loading}
-          style={{ marginBottom: "10px", padding: "8px" }}
-        />
+        <Link to="/" className="login-home-link">
+          ← Home
+        </Link>
+      </header>
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          autoComplete="current-password"
-          required
-          disabled={loading}
-          style={{ marginBottom: "10px", padding: "8px" }}
-        />
+      <div className="login-decoration login-note-left">
+        <span>Small steps</span>
+        <span>make big progress.</span>
+        <span className="login-note-smile">☺</span>
+      </div>
 
-        <button type="submit" disabled={loading} style={{ padding: "8px" }}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
+      <div className="login-decoration login-checklist">
+        <strong>Today's plan:</strong>
+        <span>☐ Plan</span>
+        <span>☐ Do</span>
+        <span>☐ Achieve</span>
+        <span>☐ Repeat</span>
+      </div>
 
-        {error && (
-          <p role="alert" style={{ color: "red" }}>
-            {error}
-          </p>
-        )}
-      </form>
+      <section className="login-card">
+        <div className="login-highlight">WELCOME BACK</div>
 
-      <p style={{ marginTop: "15px" }}>
-        Not registered? <Link to="/register">Register</Link>
-      </p>
-    </div>
+        <h1 className="login-heading">Let's get things done.</h1>
+
+        <p className="login-subtitle">
+          Sign in to pick up where you left off.
+        </p>
+
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="login-field">
+            <label htmlFor="login-email">Email address</label>
+            <input
+              id="login-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="login-field">
+            <label htmlFor="login-password">Password</label>
+
+            <div className="login-password-wrap">
+              <input
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                required
+                disabled={loading}
+              />
+
+              <button
+                type="button"
+                className="login-show-password"
+                onClick={() => setShowPassword((previous) => !previous)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                disabled={loading}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <p className="login-error" role="alert">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="login-submit"
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Sign in →"}
+          </button>
+        </form>
+
+        <div className="login-divider" />
+
+        <p className="login-switch">
+          New here? <Link to="/register">Create an account</Link>
+        </p>
+
+        <Link to="/" className="login-back-link">
+          ← Back to home
+        </Link>
+      </section>
+
+      <div className="login-decoration login-note-right">
+        <span>Better tasks.</span>
+        <span>Bigger dreams.</span>
+        <span>♡</span>
+      </div>
+
+      <footer className="login-footer">
+        A little progress every day.
+      </footer>
+    </main>
   );
 }

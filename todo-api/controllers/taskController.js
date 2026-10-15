@@ -2,7 +2,37 @@
 const mongoose = require("mongoose");
 const Task = require("../models/task");
 
-// Allowed task fields
+const ALLOWED_PRIORITIES = ["Low", "Medium", "High"];
+const ALLOWED_CATEGORIES = [
+  "Study",
+  "Personal",
+  "Work",
+  "Projects",
+];
+
+// Validate an optional deadline.
+const isValidDueDate = (value) => {
+  if (value === null || value === "") {
+    return true;
+  }
+
+  return (
+    typeof value === "string" &&
+    !Number.isNaN(Date.parse(value))
+  );
+};
+
+// Validate task priority.
+const isValidPriority = (value) => {
+  return ALLOWED_PRIORITIES.includes(value);
+};
+
+// Validate task category.
+const isValidCategory = (value) => {
+  return ALLOWED_CATEGORIES.includes(value);
+};
+
+// Allowed task fields.
 const getTaskUpdates = (body) => {
   const updates = {};
 
@@ -18,17 +48,41 @@ const getTaskUpdates = (body) => {
     updates.completed = body.completed;
   }
 
+  if (Object.prototype.hasOwnProperty.call(body, "dueDate")) {
+    updates.dueDate = body.dueDate;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(body, "priority")) {
+    updates.priority = body.priority;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(body, "category")) {
+    updates.category = body.category;
+  }
+
   return updates;
 };
 
-// Create Task
+// Create task.
 exports.createTask = async (req, res) => {
   try {
-    const { title, description, completed } = req.body;
+    const {
+      title,
+      description,
+      completed,
+      dueDate,
+      priority,
+      category,
+    } = req.body;
 
-    if (typeof title !== "string" || !title.trim()) {
+    if (
+      typeof title !== "string" ||
+      !title.trim() ||
+      title.trim().length > 200
+    ) {
       return res.status(400).json({
-        message: "Task title is required"
+        message:
+          "Task title is required and must be at most 200 characters",
       });
     }
 
@@ -37,7 +91,7 @@ exports.createTask = async (req, res) => {
       typeof description !== "string"
     ) {
       return res.status(400).json({
-        message: "Description must be a string"
+        message: "Description must be a string",
       });
     }
 
@@ -46,7 +100,35 @@ exports.createTask = async (req, res) => {
       typeof completed !== "boolean"
     ) {
       return res.status(400).json({
-        message: "Completed must be a boolean"
+        message: "Completed must be a boolean",
+      });
+    }
+
+    if (
+      dueDate !== undefined &&
+      !isValidDueDate(dueDate)
+    ) {
+      return res.status(400).json({
+        message: "Please provide a valid deadline",
+      });
+    }
+
+    if (
+      priority !== undefined &&
+      !isValidPriority(priority)
+    ) {
+      return res.status(400).json({
+        message: "Priority must be Low, Medium, or High",
+      });
+    }
+
+    if (
+      category !== undefined &&
+      !isValidCategory(category)
+    ) {
+      return res.status(400).json({
+        message:
+          "Category must be Study, Personal, Work, or Projects",
       });
     }
 
@@ -54,50 +136,59 @@ exports.createTask = async (req, res) => {
       title: title.trim(),
       description: description === undefined ? "" : description,
       completed: completed === undefined ? false : completed,
-      userId: req.user.id
+      dueDate:
+        dueDate === undefined || dueDate === ""
+          ? null
+          : dueDate,
+      priority: priority === undefined ? "Medium" : priority,
+      category: category === undefined ? "Personal" : category,
+      userId: req.user.id,
     });
 
     await task.save();
 
     return res.status(201).json(task);
   } catch (err) {
-    if (err.name === "ValidationError" || err.name === "CastError") {
+    if (
+      err.name === "ValidationError" ||
+      err.name === "CastError"
+    ) {
       return res.status(400).json({
-        message: "Invalid task data"
+        message: "Invalid task data",
       });
     }
 
     console.error("Create task error:", err.message);
 
     return res.status(500).json({
-      message: "Server error while creating task"
+      message: "Server error while creating task",
     });
   }
 };
 
-// Get tasks belonging to the authenticated user
+// Get tasks belonging to the authenticated user.
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({
-      userId: req.user.id
-    });
+      userId: req.user.id,
+    }).sort({ createdAt: -1 });
 
     return res.json(tasks);
   } catch (err) {
     console.error("Get tasks error:", err.message);
 
     return res.status(500).json({
-      message: "Server error while retrieving tasks"
+      message: "Server error while retrieving tasks",
     });
   }
 };
 
-// Update a task belonging to the authenticated user
+// Update a task belonging to the authenticated user.
 exports.updateTask = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({
-        message: "Invalid task ID"
+        message: "Invalid task ID",
       });
     }
 
@@ -105,16 +196,20 @@ exports.updateTask = async (req, res) => {
 
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({
-        message: "No valid task fields provided"
+        message: "No valid task fields provided",
       });
     }
 
     if (
       Object.prototype.hasOwnProperty.call(updates, "title") &&
-      (typeof updates.title !== "string" || !updates.title.trim())
+      (
+        typeof updates.title !== "string" ||
+        !updates.title.trim() ||
+        updates.title.trim().length > 200
+      )
     ) {
       return res.status(400).json({
-        message: "Task title cannot be empty"
+        message: "Task title must be between 1 and 200 characters",
       });
     }
 
@@ -127,7 +222,7 @@ exports.updateTask = async (req, res) => {
       typeof updates.description !== "string"
     ) {
       return res.status(400).json({
-        message: "Description must be a string"
+        message: "Description must be a string",
       });
     }
 
@@ -136,72 +231,113 @@ exports.updateTask = async (req, res) => {
       typeof updates.completed !== "boolean"
     ) {
       return res.status(400).json({
-        message: "Completed must be a boolean"
+        message: "Completed must be a boolean",
       });
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(updates, "priority") &&
+      !isValidPriority(updates.priority)
+    ) {
+      return res.status(400).json({
+        message: "Priority must be Low, Medium, or High",
+      });
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(updates, "category") &&
+      !isValidCategory(updates.category)
+    ) {
+      return res.status(400).json({
+        message:
+          "Category must be Study, Personal, Work, or Projects",
+      });
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(updates, "dueDate")
+    ) {
+      if (!isValidDueDate(updates.dueDate)) {
+        return res.status(400).json({
+          message: "Please provide a valid deadline",
+        });
+      }
+
+      if (
+        updates.dueDate === null ||
+        updates.dueDate === ""
+      ) {
+        updates.dueDate = null;
+      } else {
+        updates.dueDate = new Date(updates.dueDate);
+      }
     }
 
     const task = await Task.findOneAndUpdate(
       {
         _id: req.params.id,
-        userId: req.user.id
+        userId: req.user.id,
       },
       { $set: updates },
       {
         new: true,
-        runValidators: true
+        runValidators: true,
       }
     );
 
     if (!task) {
       return res.status(404).json({
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
     return res.json(task);
   } catch (err) {
-    if (err.name === "ValidationError" || err.name === "CastError") {
+    if (
+      err.name === "ValidationError" ||
+      err.name === "CastError"
+    ) {
       return res.status(400).json({
-        message: "Invalid task data"
+        message: "Invalid task data",
       });
     }
 
     console.error("Update task error:", err.message);
 
     return res.status(500).json({
-      message: "Server error while updating task"
+      message: "Server error while updating task",
     });
   }
 };
 
-// Delete a task belonging to the authenticated user
+// Delete a task belonging to the authenticated user.
 exports.deleteTask = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({
-        message: "Invalid task ID"
+        message: "Invalid task ID",
       });
     }
 
     const task = await Task.findOneAndDelete({
       _id: req.params.id,
-      userId: req.user.id
+      userId: req.user.id,
     });
 
     if (!task) {
       return res.status(404).json({
-        message: "Task not found"
+        message: "Task not found",
       });
     }
 
     return res.json({
-      message: "Task deleted"
+      message: "Task deleted",
     });
   } catch (err) {
     console.error("Delete task error:", err.message);
 
     return res.status(500).json({
-      message: "Server error while deleting task"
+      message: "Server error while deleting task",
     });
   }
 };
