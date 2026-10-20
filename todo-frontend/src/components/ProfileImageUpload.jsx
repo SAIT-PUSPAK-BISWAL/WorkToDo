@@ -21,7 +21,6 @@ export default function ProfileImageUpload({
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Release preview URLs when the preview changes or the component unmounts.
   useEffect(() => {
     if (!preview) return undefined;
 
@@ -86,7 +85,6 @@ export default function ProfileImageUpload({
 
       setMessage("Profile photo uploaded successfully.");
 
-      // Allow selecting the same file again later.
       const input = document.getElementById("profile-image-input");
       if (input) input.value = "";
     } catch (err) {
@@ -118,7 +116,6 @@ export default function ProfileImageUpload({
 
       await API.delete(`/upload/${userId}`);
 
-      // App.jsx uses this callback to show the default avatar.
       if (onUploadSuccess) {
         onUploadSuccess(null);
       }

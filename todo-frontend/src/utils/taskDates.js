@@ -42,7 +42,6 @@ export const getSavedPlannerDay = () => {
       return saved;
     }
   } catch {
-    // Use today's date when browser storage is unavailable.
   }
 
   return getTodayKey();

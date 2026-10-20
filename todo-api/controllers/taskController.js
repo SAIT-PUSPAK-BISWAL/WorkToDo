@@ -11,7 +11,6 @@ const ALLOWED_CATEGORIES = [
   "Projects",
 ];
 
-// Validate an optional deadline.
 const isValidDueDate = (value) => {
   if (value === null || value === "") {
     return true;
@@ -23,17 +22,14 @@ const isValidDueDate = (value) => {
   );
 };
 
-// Validate task priority.
 const isValidPriority = (value) => {
   return ALLOWED_PRIORITIES.includes(value);
 };
 
-// Validate task category.
 const isValidCategory = (value) => {
   return ALLOWED_CATEGORIES.includes(value);
 };
 
-// Allowed task fields.
 const getTaskUpdates = (body) => {
   const updates = {};
 
@@ -64,7 +60,6 @@ const getTaskUpdates = (body) => {
   return updates;
 };
 
-// Create task.
 exports.createTask = async (req, res) => {
   try {
     const {
@@ -167,7 +162,6 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// Get tasks belonging to the authenticated user.
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({
@@ -184,7 +178,6 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// Update a task belonging to the authenticated user.
 exports.updateTask = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -311,7 +304,6 @@ exports.updateTask = async (req, res) => {
   }
 };
 
-// Delete a task belonging to the authenticated user.
 exports.deleteTask = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

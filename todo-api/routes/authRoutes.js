@@ -34,10 +34,8 @@ const registerLimiter = rateLimit({
   },
 });
 
-// Register
 router.post("/register", registerLimiter, authController.register);
 
-// Login
 router.post("/login", loginLimiter, authController.login);
 
 router.get("/me", authMiddleware, async (req, res) => {
@@ -67,17 +65,14 @@ router.post("/logout", authMiddleware, async (req, res) => {
   return res.json({ message: "Signed out" });
 });
 
-// Get authenticated user's profile
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
-    // Users can access only their own profile
     if (req.params.id !== req.user.id) {
       return res.status(403).json({
         message: "You are not authorized to view this profile"
       });
     }
 
-    // Return only fields needed by the frontend
     const user = await User.findById(req.user.id)
       .select("_id username email image");
 

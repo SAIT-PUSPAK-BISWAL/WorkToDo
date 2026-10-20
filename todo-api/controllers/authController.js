@@ -13,12 +13,10 @@ if (!process.env.JWT_SECRET || Buffer.byteLength(process.env.JWT_SECRET, "utf8")
 
 const SECRET = process.env.JWT_SECRET;
 
-// Register
 exports.register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // Validate required fields
     if (
       !username ||
       !email ||
@@ -97,7 +95,6 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

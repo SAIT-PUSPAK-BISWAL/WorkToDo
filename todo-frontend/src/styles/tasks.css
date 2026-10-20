@@ -1,7 +1,3 @@
-/* =========================================================
-   TASK BOARD HEADING AND CARDS
-   ========================================================= */
-
 .task-board-heading,
 .section-heading {
   display: flex;
@@ -335,8 +331,6 @@
   background: #fff0ed;
 }
 
-/* Completed and overdue */
-
 .task-card.completed {
   border-color: #d8e3d1;
   background: #edf3e9;
@@ -365,8 +359,6 @@
   opacity: 0;
   transform: translateY(8px) scale(0.97);
 }
-
-/* Deadline editor */
 
 .deadline-editor {
   display: grid;
@@ -424,8 +416,6 @@
   color: #b42318;
   font-size: calc(12px * var(--text-scale, 1));
 }
-
-/* Empty states and unscheduled tasks */
 
 .empty-state,
 .task-empty-category {

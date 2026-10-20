@@ -7,7 +7,6 @@ const getSessionCookieOptions = () => ({
     process.env.SESSION_COOKIE_SAME_SITE ||
     "lax",
   path: "/",
-  // Prefer the cookie over lower-priority cookies with the same name.
   priority: "high",
   maxAge: 60 * 60 * 1000,
 });

@@ -8,4 +8,4 @@ router.put("/:id", authMiddleware, taskController.updateTask);
 router.delete("/:id", authMiddleware, taskController.deleteTask);
 router.get("/", authMiddleware, taskController.getTasks);
 
-module.exports = router;   // ✅ must be here
+module.exports = router;

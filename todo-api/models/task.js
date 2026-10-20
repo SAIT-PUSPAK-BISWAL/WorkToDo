@@ -32,7 +32,6 @@ const taskSchema = new mongoose.Schema(
       default: "Personal",
     },
 
-    // Optional deadline, stored as a date and time.
     dueDate: {
       type: Date,
       default: null,

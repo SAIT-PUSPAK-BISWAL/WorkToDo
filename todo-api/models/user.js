@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   email:    { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role:     { type: String, default: "user" },
-  image:    { type: String } // 👈 store uploaded image path
+  image:    { type: String }
 });
 
 module.exports = mongoose.model("User", userSchema);

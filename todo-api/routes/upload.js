@@ -13,12 +13,10 @@ const { logSecurityEvent } = require("../utils/securityLog");
 
 const router = express.Router();
 
-// Absolute uploads directory.
 const uploadDir = path.join(__dirname, "..", "uploads");
 
 fs.mkdirSync(uploadDir, { recursive: true });
 
-// Accept only JPEG, PNG, and WebP images.
 const allowedMimeTypes = new Set([
   "image/jpeg",
   "image/png",
@@ -142,7 +140,6 @@ const validateImageContent = async (req, res, next) => {
   }
 };
 
-// Upload a profile image for the authenticated user.
 router.post(
   "/upload/:id",
   authMiddleware,
@@ -202,13 +199,11 @@ router.post(
         });
       }
 
-      // Remember the previous image so it can be removed.
       const previousImage = user.image;
 
       user.image = `/uploads/${req.file.filename}`;
       await user.save();
 
-      // Remove the previous uploaded file, if there was one.
       if (
         previousImage &&
         previousImage.startsWith("/uploads/") &&
@@ -244,7 +239,6 @@ router.post(
   }
 );
 
-// Remove the authenticated user's profile image.
 router.delete("/upload/:id", authMiddleware, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -269,11 +263,9 @@ router.delete("/upload/:id", authMiddleware, async (req, res) => {
 
     const previousImage = user.image;
 
-    // Clear the image reference in MongoDB.
     user.image = null;
     await user.save();
 
-    // Delete only files inside the uploads directory.
     if (
       previousImage &&
       previousImage.startsWith("/uploads/") &&

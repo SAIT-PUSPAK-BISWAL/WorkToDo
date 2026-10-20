@@ -153,7 +153,7 @@ export default function useDashboard() {
     }
   };
   const logout = async () => {
-    try { await API.post("/auth/logout"); } catch { /* Continue clearing local account state. */ }
+    try { await API.post("/auth/logout"); } catch {}
     ["token", "username", "userId"].forEach((key) => localStorage.removeItem(key));
     setIsAuthenticated(false);
     setTasks([]);

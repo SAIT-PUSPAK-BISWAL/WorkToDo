@@ -11,7 +11,6 @@ const logSecurityEvent = (event, req, details = {}) => {
     ...details,
   };
 
-  // Deliberately omit cookies, tokens, passwords, request bodies, and IP addresses.
   console.info(JSON.stringify(record));
 };
 

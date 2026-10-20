@@ -1,7 +1,3 @@
-/* =========================================================
-   WORK TO DO — PASTEL WORKSPACE
-   ========================================================= */
-
 :root {
   font-family: Inter, "Segoe UI", Arial, sans-serif;
   color: #29291f;
@@ -112,8 +108,6 @@ label {
   color: #b42318;
   font-size: calc(12px * var(--text-scale, 1));
 }
-
-/* Shared buttons */
 
 .btn {
   display: inline-flex;

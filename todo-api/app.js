@@ -9,7 +9,6 @@ const { addRequestId, logSecurityEvent } = require("./utils/securityLog");
 const authRoutes = require("./routes/authRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const connectDB = require("./config/db");
-// Vercel's function filesystem is temporary, so disk-backed uploads are local-only.
 const uploadRoutes = process.env.VERCEL ? null : require("./routes/upload");
 
 const app = express();
@@ -41,8 +40,6 @@ app.use(cors({ origin: frontendOrigin, credentials: true }));
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
 
-// SameSite cookies reduce cross-site requests; this also blocks requests from
-// other local or same-site origins when browsers include an Origin header.
 app.use((req, res, next) => {
   if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
     const origin = req.get("origin");
