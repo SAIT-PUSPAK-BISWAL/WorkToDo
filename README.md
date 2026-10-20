@@ -1,35 +1,74 @@
-# Work To Do
+# Work To Do — Personal Task Planner
 
-A pastel-style personal task planner built with React, Vite, Express, and MongoDB. Create an account, organize tasks by category and priority, and plan deadlines from a responsive dashboard.
+A full-stack task planner for organizing personal work, tracking deadlines, and building a steady daily routine. Work To Do combines a pastel dashboard, task management, and a daily planner in a responsive web app.
 
-## Live demo
+[**🌐 Open the live demo**](https://worktodo-2026.vercel.app/)
 
-[Open Work To Do](https://worktodo-2026.vercel.app/)
+Create your own account from the demo's registration page. The app is designed for desktop, tablet, and mobile screens.
 
-The app is designed to work on desktop and mobile. Create your own account from the demo's registration page.
+---
 
-## Features
+## ✨ Key Features
 
-- Account registration and login with secure, HTTP-only session cookies
-- Personal tasks with categories, priorities, due dates, and optional due times
-- Search, status filters, category filters, and task sorting
-- Daily planner with morning, afternoon, and evening groupings
-- Task statistics for total, in progress, completed, due today, and overdue tasks
-- Light and dark themes, adjustable text size, font choices, and task markers
-- Responsive desktop, tablet, and mobile layouts
-- Profile photo upload during local development
+1. **Personal task management**
+   - Create, edit, complete, and delete tasks from your own account.
+   - Add a title and optional description. Titles are limited to 200 characters.
+   - Each task is stored with its owner, so one account cannot read or modify another user's tasks.
 
-## Technology
+2. **Flexible deadlines and times**
+   - New tasks start with today's date, while the time field stays blank until you choose a time.
+   - Tasks can have a date-only deadline or a date and time.
+   - Tasks without deadlines are kept in the unscheduled group.
+   - Due-today and overdue labels update from the task deadline and completion state.
 
-| Area | Tools |
-| --- | --- |
-| Frontend | React, React Router, Vite, Axios |
-| Backend | Node.js, Express 5 |
-| Database | MongoDB with Mongoose |
-| Authentication | bcryptjs, JWT in an HTTP-only cookie, MongoDB-backed sessions |
-| Hosting | Vercel frontend and API projects; MongoDB Atlas database |
+3. **Categories and priorities**
+   - Organize tasks into **Study**, **Personal**, **Work**, and **Projects** categories.
+   - Set **Low**, **Medium**, or **High** priority. New tasks default to **Personal** and **Medium**.
+   - Category and priority labels use color accents to make task cards easier to scan.
 
-## Project structure
+4. **Daily planner**
+   - Browse the planner by day, jump to today, or pick a date directly.
+   - See deadline tasks grouped into morning, afternoon, and evening time slots.
+   - Switch between the selected day and the full task list.
+   - View how many tasks are scheduled and how many remain unscheduled.
+
+5. **Dashboard statistics**
+   - Track total tasks, in-progress tasks, completed tasks, tasks due today, and overdue tasks.
+   - The counts update as you add, complete, and delete tasks.
+
+6. **Search, filters, and sorting**
+   - Search task titles and descriptions.
+   - Filter by all, active, completed, due-today, or overdue status.
+   - Narrow the list by category and sort by priority, deadline, or overdue status.
+
+7. **Personal appearance settings**
+   - Switch between light and dark themes.
+   - Adjust text size, choose a font, and pick a task marker.
+   - Preferences are saved in the browser for the next visit.
+
+8. **Responsive interface**
+   - Navigation, task forms, planner, statistics, and task cards adapt to smaller screens.
+   - The mobile layout stacks content and controls for narrow phone displays.
+
+9. **Account security**
+   - Passwords are hashed with bcrypt before storage.
+   - Login uses a signed JWT in an HTTP-only session cookie and a server-side MongoDB session record.
+   - Authentication and task routes are rate limited, request bodies are size limited, and API responses include security headers.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend:** React 19, React Router, Vite, Axios
+- **Backend:** Node.js, Express 5
+- **Database:** MongoDB Atlas or MongoDB server, accessed through Mongoose
+- **Authentication:** bcryptjs, JSON Web Tokens, HTTP-only cookies, MongoDB-backed sessions
+- **Deployment:** Vercel for the frontend and API; MongoDB Atlas for persistent data
+- **Testing:** Node.js built-in test runner and Supertest
+
+---
+
+## 📂 Project Structure
 
 ```text
 todo/
@@ -38,36 +77,62 @@ todo/
 │   ├── app.js                 Express application and middleware
 │   ├── index.js               Local API server entry point
 │   ├── auth/                  Session cookie configuration
-│   ├── config/                MongoDB connection
-│   ├── controllers/           Authentication and task handlers
-│   ├── middleware/            Authentication and request checks
+│   ├── config/                MongoDB connection and reuse
+│   ├── controllers/           Authentication and task logic
+│   ├── middleware/            Session authentication and request checks
 │   ├── models/                User, task, and session schemas
-│   ├── routes/                Authentication, task, and upload routes
+│   ├── routes/                Authentication, task, and profile upload routes
 │   ├── test/                  API security tests
-│   └── utils/                 Security event logging
+│   └── utils/                 Request IDs and security event logging
 └── todo-frontend/
-    ├── index.html
-    ├── vercel.json            API rewrites and SPA routing
+    ├── index.html             Vite HTML entry point
+    ├── vercel.json            API rewrites and client-side routing
     └── src/
-        ├── components/        Pages and shared interface components
-        ├── hooks/             Dashboard data and state
+        ├── components/        Landing, login, registration, and dashboard UI
+        ├── hooks/             Dashboard data and preference state
         ├── pages/             Route-level pages
-        ├── services/          API client
-        ├── styles/            Interface styles, including responsive rules
-        └── utils/             Date helpers
+        ├── services/          Axios API client
+        ├── styles/            Global, dashboard, theme, and responsive styles
+        └── utils/             Planner and deadline date helpers
 ```
 
-## Run locally
+---
+
+## ⚙️ Environment Variables
+
+The API reads local configuration from `todo-api/.env`. Start with the included example:
+
+```powershell
+Copy-Item todo-api/.env.example todo-api/.env
+```
+
+Configure these values in `todo-api/.env`:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://DB_USER:DB_PASSWORD@YOUR_CLUSTER.mongodb.net/worktodo?retryWrites=true&w=majority
+JWT_SECRET=replace_with_a_random_secret_at_least_32_bytes_long
+FRONTEND_URL=http://localhost:5173
+TRUST_PROXY_HOPS=0
+```
+
+Replace the example database username, password, cluster, and secret with your own values. The database user must have permission to read and write the database named in the URI. If the password contains reserved URL characters, URL-encode it. Never commit `.env` or share a completed connection string.
+
+For Vercel, configure the API variables in the API project's **Settings → Environment Variables**. Production additionally uses `NODE_ENV=production` and `SESSION_COOKIE_SAME_SITE=lax`. Configure `VITE_ENABLE_PROFILE_UPLOAD=false` in the frontend project to disable disk-based profile uploads in the hosted demo. Never put secrets in `VITE_` variables; frontend variables are visible to users.
+
+---
+
+## 🏃 Getting Started
 
 ### Requirements
 
 - Node.js 20 or newer
 - npm
-- A MongoDB connection: a local MongoDB instance or a MongoDB Atlas cluster
+- A MongoDB connection, either a local database or MongoDB Atlas
 
 ### 1. Install dependencies
 
-From the repository root, run:
+Run these commands from the repository root:
 
 ```powershell
 cd todo-api
@@ -77,141 +142,133 @@ npm install
 cd ..
 ```
 
-### 2. Configure the API
+### 2. Configure MongoDB and the API
 
-Copy the example environment file and edit `todo-api/.env`:
+Copy `todo-api/.env.example` to `todo-api/.env` and fill in the values described above. For an Atlas database, add the API host's required network access rule in Atlas.
 
-```powershell
-Copy-Item todo-api/.env.example todo-api/.env
-```
+### 3. Start the backend
 
-Set these values in `todo-api/.env`:
-
-| Variable | Local value |
-| --- | --- |
-| `PORT` | `5000` |
-| `MONGODB_URI` | Your MongoDB connection string, including a database name |
-| `JWT_SECRET` | A random secret of at least 32 bytes |
-| `FRONTEND_URL` | `http://localhost:5173` |
-| `TRUST_PROXY_HOPS` | `0` |
-
-Example MongoDB URI format:
-
-```text
-mongodb+srv://DB_USER:DB_PASSWORD@your-cluster.mongodb.net/worktodo?retryWrites=true&w=majority
-```
-
-Replace the example values with your own. If the password contains reserved URL characters, URL-encode it. Keep `.env` private; it is excluded from Git.
-
-### 3. Start the API
-
-Open a terminal in the repository root and run:
+In a terminal at the repository root:
 
 ```powershell
 cd todo-api
 node index.js
 ```
 
-The API listens at `http://localhost:5000`.
+The API starts at `http://localhost:5000`.
 
 ### 4. Start the frontend
 
-Open a second terminal in the repository root and run:
+In a second terminal at the repository root:
 
 ```powershell
 cd todo-frontend
 npm start
 ```
 
-Open `http://localhost:5173`. During local development, Vite forwards `/auth` and `/tasks` requests to the API on port 5000.
+Open [http://localhost:5173](http://localhost:5173). Vite forwards local `/auth` and `/tasks` requests to the API on port 5000.
 
-## API overview
+---
 
-Authentication routes are under `/auth`; task routes are under `/tasks`.
+## 🔌 API Routes
 
-| Method | Path | Purpose | Login required |
+Authentication endpoints use the `/auth` prefix. Task endpoints use `/tasks`.
+
+| Method | Path | Description | Session required |
 | --- | --- | --- | --- |
 | `POST` | `/auth/register` | Create an account | No |
-| `POST` | `/auth/login` | Sign in | No |
-| `GET` | `/auth/me` | Check the current session | Yes |
-| `POST` | `/auth/logout` | End the current session | Yes |
-| `GET` | `/auth/:id` | Read the signed-in user's profile | Yes |
+| `POST` | `/auth/login` | Sign in and create a session | No |
+| `GET` | `/auth/me` | Return the current user's session profile | Yes |
+| `POST` | `/auth/logout` | Revoke the current session | Yes |
+| `GET` | `/auth/:id` | Return the signed-in user's profile | Yes |
 | `GET` | `/tasks` | List the signed-in user's tasks | Yes |
 | `POST` | `/tasks` | Create a task | Yes |
-| `PUT` | `/tasks/:id` | Update a task | Yes |
-| `DELETE` | `/tasks/:id` | Delete a task | Yes |
+| `PUT` | `/tasks/:id` | Update an owned task | Yes |
+| `DELETE` | `/tasks/:id` | Delete an owned task | Yes |
 
-## Tests and production build
+Task priority values are `Low`, `Medium`, and `High`. Category values are `Study`, `Personal`, `Work`, and `Projects`.
 
-Run the API security tests:
+---
+
+## 🧪 Running Tests
+
+Run the API security test suite from `todo-api`:
 
 ```powershell
-cd todo-api
 npm test
 ```
 
-Create a production frontend build:
+The tests cover authentication and session behavior, user and task ownership checks, request validation, and rate limiting.
+
+---
+
+## 📦 Production Build
+
+Create the frontend's production bundle from `todo-frontend`:
 
 ```powershell
-cd todo-frontend
 npm run build
 ```
 
-## Deploy the demo
+Vite writes the generated site to `todo-frontend/dist/`.
 
-The live demo uses two Vercel projects from this repository: one for the Express API and one for the React frontend. MongoDB Atlas stores account and task data.
+---
+
+## 🚀 Deploying the Demo
+
+The live demo uses two Vercel projects from this repository: one for the Express API and one for the React frontend. MongoDB Atlas stores accounts, sessions, and tasks.
 
 ### MongoDB Atlas
 
 1. Create an Atlas project and an **M0 Free** cluster.
 2. In **Database Access**, create a database user with `readWrite` access to the app database.
-3. In **Network Access**, add the network access entry needed by Vercel.
-4. Copy the Atlas connection string and replace the password placeholder. Include the database name after `.net/`, for example `/worktodo?retryWrites=true&w=majority`.
+3. In **Network Access**, add the network access entry needed for Vercel.
+4. Copy the Atlas connection string, replace its password placeholder, and include the app database name after `.net/`.
 
-On Vercel's free Hobby plan, a fixed outbound IP may not be available for Atlas allowlisting. If you use `0.0.0.0/0` for a personal demo, use a unique strong database password, restrict the database role to the app database, and keep sensitive information out of the demo database. Remove the broad access entry when the demo is no longer needed.
+Vercel Hobby may not provide a fixed outbound IP for Atlas allowlisting. If you use `0.0.0.0/0` for a personal demo, choose a unique strong database password, limit the database user to the app database, and do not store sensitive information in the demo. Remove the broad access rule when you stop sharing the app.
 
 ### Vercel API project
 
 1. Import the GitHub repository into Vercel and set **Root Directory** to `todo-api`.
-2. Add these environment variables for **Production** in **Settings → Environment Variables**:
+2. Add the following variables for **Production** in **Settings → Environment Variables**:
 
    | Name | Value |
    | --- | --- |
    | `NODE_ENV` | `production` |
-   | `MONGODB_URI` | Your complete Atlas connection string |
-   | `JWT_SECRET` | A private random secret of at least 32 bytes |
+   | `MONGODB_URI` | Complete Atlas connection string, including database name |
+   | `JWT_SECRET` | Private random secret of at least 32 bytes |
    | `FRONTEND_URL` | `https://worktodo-2026.vercel.app` |
    | `TRUST_PROXY_HOPS` | `1` |
    | `SESSION_COOKIE_SAME_SITE` | `lax` |
 
-3. Deploy or redeploy the API after setting the environment variables.
+3. Deploy or redeploy the API after setting the variables.
 
 ### Vercel frontend project
 
 1. Import the same GitHub repository as a second Vercel project and set **Root Directory** to `todo-frontend`.
-2. The current `todo-frontend/vercel.json` forwards `/auth` and `/tasks` to `https://worktodo2026.vercel.app`. If the API project uses a different domain, replace that hostname in the file and push the change to GitHub.
-3. Add the Production environment variable `VITE_ENABLE_PROFILE_UPLOAD=false`.
+2. The current `todo-frontend/vercel.json` rewrites `/auth` and `/tasks` to `https://worktodo2026.vercel.app`. If your API project has a different domain, update this hostname and push the change to GitHub.
+3. Set the Production environment variable `VITE_ENABLE_PROFILE_UPLOAD=false`.
 4. Deploy or redeploy the frontend.
 
-Vercel's function filesystem is temporary, so profile photo uploads are disabled in the hosted demo. They remain available in local development. Do not put secrets in frontend variables prefixed with `VITE_`; those values are included in the browser bundle.
+Vercel's function filesystem is temporary, so profile photo uploads are disabled in the hosted demo. They remain available during local development. After deployment, check registration, login, task creation and editing, completion, deletion, logout, and direct refresh of `/tasks`.
 
-After deployment, check account registration, login, task creation and editing, task completion, deletion, logout, and a direct refresh of `/tasks`.
+Vercel Hobby is intended for personal, non-commercial projects. Vercel and Atlas free tiers have usage and storage limits; review their current terms before relying on the demo for production or commercial use.
 
-## Troubleshooting
+---
 
-- **`404` with `DEPLOYMENT_NOT_FOUND` on `/auth/register`:** check that the API hostname in `todo-frontend/vercel.json` matches the API project's deployed Vercel domain, then redeploy the frontend.
-- **`500` on registration:** check the API project's Production `MONGODB_URI` and `JWT_SECRET`. Confirm the Atlas database user has `readWrite` access to the database named in the URI and that the Atlas network access entry is active. Redeploy the API after changing variables.
-- **`403` request-origin error:** make sure the API's `FRONTEND_URL` exactly matches the frontend URL, including `https://` and without a trailing slash.
-- **`429` while registering or logging in:** the API rate-limits repeated attempts. Wait for the limit window to reset before trying again.
-- **Environment variable changes don't seem to apply:** redeploy the affected Vercel project after saving the variable.
+## 🧰 Troubleshooting
 
-## Security notes
+- **`404` with `DEPLOYMENT_NOT_FOUND` on `/auth/register`:** Confirm the API hostname in `todo-frontend/vercel.json` matches the deployed API domain, then redeploy the frontend.
+- **`500` on registration:** Check the API project's Production `MONGODB_URI` and `JWT_SECRET`. Confirm the Atlas database user has `readWrite` access to the database named in the URI and that Atlas network access is active. Redeploy the API after changing variables.
+- **`403` request-origin error:** Set the API's `FRONTEND_URL` to the exact frontend URL, including `https://` and without a trailing slash.
+- **`429` during registration or login:** The API limits repeated attempts. Wait for the rate limit window to reset before retrying.
+- **Environment variable changes have no effect:** Redeploy the Vercel project after saving the changed variable.
 
-- Never commit `.env` files, database passwords, or `JWT_SECRET` values.
-- Use a separate database user for this demo with access only to the app database.
-- The backend stores session tokens in HTTP-only cookies and validates task ownership on API requests.
-- The hosted demo is intended for portfolio/interview review. Avoid using real personal or sensitive data.
+---
 
-## Free-tier notes
+## 🔐 Security Notes
 
-Vercel Hobby and Atlas M0 have usage, storage, and feature limits that can change. Review the providers' current plans and acceptable-use terms before relying on the demo for production or commercial use.
+- Keep `.env`, database credentials, and `JWT_SECRET` out of GitHub and public messages.
+- Use a dedicated Atlas database user with access only to this app's database.
+- The API stores session tokens in HTTP-only cookies and checks task ownership on protected routes.
+- Use demo accounts and sample tasks only; do not add sensitive personal information.
