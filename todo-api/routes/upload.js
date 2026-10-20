@@ -5,9 +5,11 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const { rateLimit } = require("express-rate-limit");
 
 const User = require("../models/user");
 const authMiddleware = require("../middleware/authMiddleware");
+const { logSecurityEvent } = require("../utils/securityLog");
 
 const router = express.Router();
 
@@ -64,10 +66,88 @@ const upload = multer({
   },
 });
 
+const profileUploadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 20,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: { message: "Too many profile image uploads. Please try again later." },
+  handler: (req, res) => {
+    logSecurityEvent("profile.upload.rate_limited", req, { userId: req.user?.id });
+    res.status(429).json({ message: "Too many profile image uploads. Please try again later." });
+  },
+});
+
+const validateUploadOwner = (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return res.status(400).json({
+      message: "Invalid user ID",
+    });
+  }
+
+  if (req.params.id !== req.user.id) {
+    return res.status(403).json({
+      message: "You cannot change another user's profile image",
+    });
+  }
+
+  return next();
+};
+
+const hasValidImageSignature = (mimeType, buffer) => {
+  if (mimeType === "image/jpeg") {
+    return buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+  }
+
+  if (mimeType === "image/png") {
+    return buffer.subarray(0, 8).equals(
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+    );
+  }
+
+  if (mimeType === "image/webp") {
+    return (
+      buffer.toString("ascii", 0, 4) === "RIFF" &&
+      buffer.toString("ascii", 8, 12) === "WEBP"
+    );
+  }
+
+  return false;
+};
+
+const validateImageContent = async (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({
+      message: "No file uploaded",
+    });
+  }
+
+  try {
+    const image = await fs.promises.readFile(req.file.path);
+
+    if (!hasValidImageSignature(req.file.mimetype, image)) {
+      await fs.promises.unlink(req.file.path);
+      return res.status(400).json({
+        message: "The uploaded file is not a valid JPEG, PNG, or WebP image",
+      });
+    }
+
+    return next();
+  } catch (err) {
+    await fs.promises.unlink(req.file.path).catch(() => {});
+    logSecurityEvent("profile.image.verify_error", req, { errorType: err.name, userId: req.user.id });
+    return res.status(500).json({
+      message: "Could not verify the uploaded image",
+    });
+  }
+};
+
 // Upload a profile image for the authenticated user.
 router.post(
   "/upload/:id",
   authMiddleware,
+  validateUploadOwner,
+  profileUploadLimiter,
   (req, res, next) => {
     upload.single("image")(req, res, (err) => {
       if (!err) {
@@ -88,6 +168,7 @@ router.post(
       });
     });
   },
+  validateImageContent,
   async (req, res) => {
     let uploadedPath;
 
@@ -140,10 +221,7 @@ router.post(
 
         fs.unlink(previousPath, (err) => {
           if (err && err.code !== "ENOENT") {
-            console.error(
-              "Could not remove previous profile image:",
-              err.message
-            );
+            logSecurityEvent("profile.image.cleanup_error", req, { errorType: err.name, userId: req.user.id });
           }
         });
       }
@@ -157,7 +235,7 @@ router.post(
         fs.unlink(uploadedPath, () => {});
       }
 
-      console.error("Upload error:", err.message);
+      logSecurityEvent("profile.upload.error", req, { errorType: err.name, userId: req.user.id });
 
       return res.status(500).json({
         message: "Server error while uploading image",
@@ -208,10 +286,7 @@ router.delete("/upload/:id", authMiddleware, async (req, res) => {
 
       fs.unlink(imagePath, (err) => {
         if (err && err.code !== "ENOENT") {
-          console.error(
-            "Could not delete profile image file:",
-            err.message
-          );
+          logSecurityEvent("profile.image.cleanup_error", req, { errorType: err.name, userId: req.user.id });
         }
       });
     }
@@ -221,7 +296,7 @@ router.delete("/upload/:id", authMiddleware, async (req, res) => {
       image: null,
     });
   } catch (err) {
-    console.error("Profile image removal error:", err.message);
+    logSecurityEvent("profile.image.remove_error", req, { errorType: err.name, userId: req.user.id });
 
     return res.status(500).json({
       message: "Server error while removing profile image",

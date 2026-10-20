@@ -2,9 +2,13 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { SESSION_COOKIE, getSessionCookieOptions } = require("../auth/session");
+const crypto = require("crypto");
+const Session = require("../models/session");
+const { logSecurityEvent } = require("../utils/securityLog");
 
-if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET is missing from .env");
+if (!process.env.JWT_SECRET || Buffer.byteLength(process.env.JWT_SECRET, "utf8") < 32) {
+  throw new Error("JWT_SECRET must be set to a random value of at least 32 bytes");
 }
 
 const SECRET = process.env.JWT_SECRET;
@@ -66,12 +70,14 @@ exports.register = async (req, res) => {
     });
 
     await user.save();
+    logSecurityEvent("auth.register.success", req);
 
     return res.status(201).json({
       message: "User registered successfully"
     });
   } catch (err) {
     if (err.code === 11000) {
+      logSecurityEvent("auth.register.duplicate", req);
       return res.status(409).json({
         message: "User already exists"
       });
@@ -83,7 +89,7 @@ exports.register = async (req, res) => {
       });
     }
 
-    console.error("Registration error:", err.message);
+    logSecurityEvent("auth.register.error", req, { errorType: err.name });
 
     return res.status(500).json({
       message: "Server error during registration"
@@ -112,6 +118,7 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: cleanEmail });
 
     if (!user) {
+      logSecurityEvent("auth.login.failure", req);
       return res.status(401).json({
         message: "Invalid credentials"
       });
@@ -120,24 +127,31 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
+      logSecurityEvent("auth.login.failure", req, { userId: user._id.toString() });
       return res.status(401).json({
         message: "Invalid credentials"
       });
     }
 
+    const jti = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    await Session.create({ userId: user._id, jti, expiresAt });
     const token = jwt.sign(
-      { id: user._id.toString() },
+      { id: user._id.toString(), jti },
       SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h", algorithm: "HS256" }
     );
 
+    res.cookie(SESSION_COOKIE, token, getSessionCookieOptions());
+    logSecurityEvent("auth.login.success", req, { userId: user._id.toString() });
+
     return res.json({
-      token,
       userId: user._id,
       username: user.username
     });
   } catch (err) {
-    console.error("Login error:", err.message);
+    logSecurityEvent("auth.login.error", req, { errorType: err.name });
+    logSecurityEvent("auth.login.error", req, { errorType: err.name });
 
     return res.status(500).json({
       message: "Server error during login"

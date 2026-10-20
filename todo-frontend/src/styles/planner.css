@@ -1,0 +1,280 @@
+/* =========================================================
+   MAIN PLANNER + TASK WORKSPACE
+   ========================================================= */
+
+.workspace-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.34fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.daily-planner-panel {
+  position: relative;
+  min-width: 0;
+  padding: 20px 17px 18px;
+  border: 1px solid #f1dfa0;
+  border-radius: 15px;
+  background:
+    radial-gradient(ellipse at 20% 8%, rgba(255, 229, 128, 0.22), transparent 55%),
+    #fff9df;
+  box-shadow: 0 5px 15px rgba(92, 72, 12, 0.045);
+}
+
+.daily-planner-panel::before {
+  position: absolute;
+  top: -7px;
+  left: 22px;
+  width: 40px;
+  height: 10px;
+  transform: rotate(-13deg);
+  border-radius: 2px;
+  background: rgba(242, 206, 91, 0.55);
+  content: "";
+}
+
+.planner-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 19px;
+}
+
+.planner-heading > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.planner-heading h2 {
+  margin: 0;
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-size: calc(21px * var(--text-scale, 1));
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.planner-heading h2 > span {
+  margin-left: 4px;
+  color: #8fa88b;
+  font-family: Arial, sans-serif;
+  font-size: calc(16px * var(--text-scale, 1));
+}
+
+.planner-paperclip {
+  color: #e4ac18;
+  font-size: calc(26px * var(--text-scale, 1));
+  transform: rotate(-25deg);
+}
+
+.planner-view-toggle {
+  display: flex;
+  flex: 0 0 auto;
+  padding: 3px;
+  border: 1px solid #e9dfc6;
+  border-radius: 18px;
+  background: #fffdf5;
+}
+
+.planner-view-toggle button {
+  min-width: 47px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  font-size: calc(12px * var(--text-scale, 1));
+}
+
+.planner-view-toggle button.selected {
+  background: #ffd75a;
+  font-weight: 750;
+}
+
+.planner-date-buttons {
+  display: grid;
+  grid-template-columns: 1fr 0.88fr 1fr;
+  gap: 7px;
+  margin-bottom: 19px;
+}
+
+.planner-date-buttons button {
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 5px;
+  border: 1px solid #ebe3d1;
+  border-radius: 10px;
+  background: rgba(255, 253, 247, 0.88);
+  font-size: calc(11px * var(--text-scale, 1));
+  white-space: nowrap;
+}
+
+.planner-date-buttons button:hover {
+  background: #fff2be;
+}
+
+.planner-date-buttons button.today-button {
+  border-color: #f5d35d;
+  background: #ffd85d;
+  font-weight: 750;
+}
+
+.planner-date-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0 0 11px;
+  font-size: calc(12px * var(--text-scale, 1));
+  line-height: 1.45;
+}
+
+.planner-date-label > span {
+  color: #6d6551;
+  font-size: calc(18px * var(--text-scale, 1));
+}
+
+.planner-date-label strong {
+  font-weight: 750;
+}
+
+.planner-date-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.planner-date-input > span {
+  flex: 0 0 auto;
+  color: #756d5a;
+  font-size: calc(10px * var(--text-scale, 1));
+}
+
+.planner-date-input input {
+  min-height: 32px;
+  padding: 5px 7px;
+  border-color: #e8dfc9;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.65);
+  font-size: calc(11px * var(--text-scale, 1));
+}
+
+.planner-time-groups {
+  display: grid;
+  gap: 9px;
+}
+
+.planner-time-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 62px;
+  padding: 11px 12px;
+  border: 1px solid #eee6d5;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  text-align: left;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.planner-time-card:hover {
+  transform: translateX(2px);
+  border-color: #e8d17b;
+  background: #fffdf5;
+}
+
+.planner-time-card.has-tasks {
+  border-color: #e7d8a0;
+  background: rgba(255, 255, 255, 0.91);
+}
+
+.planner-time-icon {
+  display: grid;
+  width: 31px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #e6ad1b;
+  font-size: calc(27px * var(--text-scale, 1));
+  line-height: 1;
+}
+
+.planner-time-card:nth-child(3) .planner-time-icon {
+  color: #a2a497;
+}
+
+.planner-time-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.planner-time-copy strong {
+  font-size: calc(12px * var(--text-scale, 1));
+  font-weight: 650;
+}
+
+.planner-time-copy small {
+  color: #888477;
+  font-size: calc(10px * var(--text-scale, 1));
+}
+
+.planner-time-arrow {
+  margin-left: auto;
+  color: #9d9b8f;
+  font-size: calc(24px * var(--text-scale, 1));
+  line-height: 1;
+}
+
+.planner-encouragement {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 7px;
+  margin-top: 23px;
+  padding: 13px 7px;
+  transform: rotate(-1deg);
+  border-radius: 17px;
+  background: #e5f0d7;
+  color: #78916e;
+}
+
+.planner-encouragement > span {
+  font-size: calc(25px * var(--text-scale, 1));
+}
+
+.planner-encouragement p {
+  margin: 0;
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-size: calc(13px * var(--text-scale, 1));
+  line-height: 1.5;
+  text-align: center;
+}
+
+.planner-unscheduled-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 17px;
+  padding: 9px 3px 0;
+  border-top: 1px dashed #e8dcb8;
+  color: #77705e;
+  font-size: calc(11px * var(--text-scale, 1));
+}
+
+.planner-unscheduled-count strong {
+  display: grid;
+  min-width: 25px;
+  height: 25px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff0b4;
+  color: #5d4b14;
+}
+
+.task-workspace {
+  min-width: 0;
+}
+

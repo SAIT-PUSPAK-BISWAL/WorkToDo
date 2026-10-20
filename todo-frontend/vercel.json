@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/auth", "destination": "https://YOUR-API-PROJECT.vercel.app/auth" },
+    { "source": "/auth/:path*", "destination": "https://YOUR-API-PROJECT.vercel.app/auth/:path*" },
+    { "source": "/tasks", "destination": "https://YOUR-API-PROJECT.vercel.app/tasks" },
+    { "source": "/tasks/:path*", "destination": "https://YOUR-API-PROJECT.vercel.app/tasks/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

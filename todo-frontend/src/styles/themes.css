@@ -1,0 +1,338 @@
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+.dashboard.theme-dark {
+  --paper: #242923;
+  --paper-warm: #292e27;
+  --paper-yellow: #45412b;
+  --yellow: #e8c84e;
+  --yellow-deep: #f1d76f;
+  --ink: #f3f0e6;
+  --muted: #b4b7a9;
+  --border: #41483f;
+  --green: #a8d6a9;
+  --red: #ffaaa1;
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.24);
+  background: #1a1e1a;
+  color: var(--ink);
+  color-scheme: dark;
+}
+
+.theme-dark .app-nav {
+  border-color: #383e35;
+  background: rgba(29, 33, 28, 0.95);
+}
+
+.theme-dark .brand-note {
+  background: #e7cb68;
+  color: #29291f;
+}
+
+.theme-dark .nav-link {
+  color: #deded1;
+}
+
+.theme-dark .nav-link.active,
+.theme-dark .nav-link:hover {
+  background: #45402b;
+  color: #fff1bd;
+}
+
+.theme-dark .text-size-control,
+.theme-dark .profile-menu,
+.theme-dark .toolbar-popover-panel {
+  border-color: var(--border);
+  background: #252a24;
+  color: var(--ink);
+}
+
+.theme-dark .theme-toggle {
+  border-color: #4c5145;
+  background: #292e27;
+  color: #f1d76f;
+}
+
+.theme-dark .text-size-control button.selected,
+.theme-dark .marker-options button.selected {
+  background: #5b512d;
+}
+
+.theme-dark .profile-menu > button,
+.theme-dark .profile-menu .menu-caption {
+  color: var(--ink);
+}
+
+.theme-dark .profile-menu > button:hover {
+  background: #383e33;
+}
+
+.theme-dark .marker-options button {
+  border-color: #4b5247;
+  background: #20251f;
+  color: var(--ink);
+}
+
+.theme-dark .dashboard-title,
+.theme-dark .dashboard-eyebrow,
+.theme-dark .stat-value,
+.theme-dark .task-board-heading h2,
+.theme-dark .section-heading h2 {
+  color: var(--ink);
+}
+
+.theme-dark .dashboard-subtitle,
+.theme-dark .stat-label {
+  color: var(--muted);
+}
+
+.theme-dark .stat-total,
+.theme-dark .stat-due {
+  border-color: #75673c;
+  background: #393421;
+}
+
+.theme-dark .stat-progress {
+  border-color: #75673c;
+  background: #393421;
+}
+
+.theme-dark .stat-completed {
+  border-color: #3c6043;
+  background: #26372a;
+}
+
+.theme-dark .stat-overdue {
+  border-color: #704440;
+  background: #3b2929;
+}
+
+.theme-dark .stat-label {
+  color: #e0dccd;
+}
+
+.theme-dark .dashboard-search,
+.theme-dark .filter-button,
+.theme-dark .btn-secondary {
+  border-color: #444a40;
+  background: #252a24;
+  color: var(--ink);
+}
+
+.theme-dark .dashboard-search input {
+  color: var(--ink);
+}
+
+.theme-dark .filter-button.active,
+.theme-dark .filters-close-button {
+  border-color: #88753b;
+  background: #554a29;
+  color: #fff1bd;
+}
+
+.theme-dark .daily-planner-panel {
+  border-color: #5c5131;
+  background: #2b2b21;
+}
+
+.theme-dark .planner-heading h2,
+.theme-dark .planner-date-label,
+.theme-dark .planner-time-copy strong {
+  color: var(--ink);
+}
+
+.theme-dark .planner-date-buttons button,
+.theme-dark .planner-view-toggle,
+.theme-dark .planner-view-toggle button,
+.theme-dark .planner-date-input input,
+.theme-dark .planner-time-card {
+  border-color: #48483a;
+  background: #242921;
+  color: var(--ink);
+}
+
+.theme-dark .planner-view-toggle button.selected,
+.theme-dark .planner-date-buttons button.today-button {
+  background: #6a5926;
+  color: #fff4c9;
+}
+
+.theme-dark .planner-time-card.has-tasks {
+  background: #30352b;
+}
+
+.theme-dark .planner-time-copy small,
+.theme-dark .planner-date-input > span,
+.theme-dark .planner-unscheduled-count {
+  color: #b6b5a4;
+}
+
+.theme-dark .planner-encouragement {
+  background: #2b3a2d;
+  color: #a5c59a;
+}
+
+.theme-dark .composer-wrap {
+  border-color: #65582e;
+  background: #302d20;
+}
+
+.theme-dark .task-composer .task-title-input,
+.theme-dark .task-composer .task-deadline-field input,
+.theme-dark .task-composer .task-deadline-field select,
+.theme-dark .task-composer .task-category-field select,
+.theme-dark .task-composer .task-priority-field select {
+  border-color: #4e4934;
+  background: #24271f;
+  color: var(--ink);
+}
+
+.theme-dark .task-composer .task-deadline-field > span,
+.theme-dark .task-composer .task-category-field > span,
+.theme-dark .task-composer .task-priority-field > span {
+  color: #c6bea0;
+}
+
+.theme-dark .task-card,
+.theme-dark .task-card:nth-child(3n + 2),
+.theme-dark .task-card:nth-child(3n) {
+  border-color: #555344;
+  background: #353426;
+}
+
+.theme-dark .task-card:nth-child(3n + 2) {
+  border-color: #3d5540;
+  background: #28382b;
+}
+
+.theme-dark .task-card:nth-child(3n) {
+  border-color: #65403e;
+  background: #3b2b2b;
+}
+
+.theme-dark .task-title,
+.theme-dark .deadline-value,
+.theme-dark .task-actions button {
+  color: #f0eddf;
+}
+
+.theme-dark .task-status,
+.theme-dark .deadline-label,
+.theme-dark .deadline-no-date {
+  color: #c1bca9;
+}
+
+.theme-dark .task-category-select.category-study {
+  background: #2d4a35;
+  color: #d6f1d0;
+}
+
+.theme-dark .task-category-select.category-personal {
+  background: #513332;
+  color: #ffd9d4;
+}
+
+.theme-dark .task-category-select.category-work {
+  background: #344833;
+  color: #d8f0d0;
+}
+
+.theme-dark .task-category-select.category-projects {
+  background: #463552;
+  color: #ead9ff;
+}
+
+.theme-dark .priority-select.priority-high {
+  background: #512f2d;
+  color: #ffd5cd;
+}
+
+.theme-dark .priority-select.priority-medium {
+  background: #504426;
+  color: #ffe7a3;
+}
+
+.theme-dark .priority-select.priority-low {
+  background: #2c4731;
+  color: #d5f3d2;
+}
+
+.theme-dark .task-card.completed {
+  border-color: #3d5140;
+  background: #26352b;
+}
+
+.theme-dark .task-card.overdue:not(.completed) {
+  border-color: #68413b;
+  background: #3a2928;
+}
+
+.theme-dark .task-actions button:hover:not(:disabled) {
+  background: #4b4939;
+}
+
+.theme-dark .deadline-editor {
+  border-color: #4f4b36;
+  background: #292d25;
+}
+
+.theme-dark .deadline-editor label,
+.theme-dark .deadline-editor > strong {
+  color: var(--ink);
+}
+
+.theme-dark .deadline-editor input,
+.theme-dark .deadline-quick-options button,
+.theme-dark .deadline-edit-actions button {
+  border-color: #4c4d3c;
+  background: #20251f;
+  color: var(--ink);
+}
+
+.theme-dark .deadline-edit-actions button:first-child {
+  background: #514728;
+}
+
+.theme-dark .empty-state,
+.theme-dark .task-empty-category {
+  border-color: #454b40;
+  background: #242923;
+}
+
+.theme-dark .empty-state h3 {
+  color: var(--ink);
+}
+
+.theme-dark .task-count-pill {
+  border-color: #625633;
+  background: #3c3522;
+  color: #f0dda0;
+}
+
+.theme-dark .upload-panel {
+  border-color: var(--border);
+  background: var(--paper);
+}
+
+.theme-dark .dashboard-footer {
+  border-color: #3c4238;
+  color: #a5a695;
+}
+
+/* Text-size selector */
+
+.dashboard.text-small {
+  --text-scale: 0.9;
+  --base-text: var(--small-text);
+}
+
+.dashboard.text-normal {
+  --text-scale: 1;
+  --base-text: 14px;
+}
+
+.dashboard.text-large {
+  --text-scale: 1.12;
+  --base-text: var(--large-text);
+}
+

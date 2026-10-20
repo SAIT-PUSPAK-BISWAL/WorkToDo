@@ -12,9 +12,19 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/tasks", { replace: true });
-    }
+    let cancelled = false;
+    API.get("/auth/me")
+      .then(({ data }) => {
+        if (cancelled) return;
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("userId", data._id);
+        navigate("/tasks", { replace: true });
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
   }, [navigate]);
 
   const handleSubmit = async (event) => {
@@ -34,14 +44,14 @@ export default function Login() {
         password,
       });
 
-      if (!data.token || !data.username || !data.userId) {
+      if (!data.username || !data.userId) {
         setError("Invalid response from server. Please try again.");
         return;
       }
 
-      localStorage.setItem("token", data.token);
       localStorage.setItem("username", data.username);
       localStorage.setItem("userId", data.userId);
+      localStorage.removeItem("token");
 
       navigate("/tasks", { replace: true });
     } catch (err) {

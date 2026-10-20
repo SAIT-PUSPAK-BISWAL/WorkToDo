@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import API from "../services/api";
 
+const getTodayDateInputValue = () => {
+  const today = new Date();
+  return [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0"),
+  ].join("-");
+};
+
 export default function TaskForm({ onAdd }) {
   const [title, setTitle] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [dueDate, setDueDate] = useState(getTodayDateInputValue);
   const [dueTime, setDueTime] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [category, setCategory] = useState("Personal");
@@ -57,7 +66,7 @@ export default function TaskForm({ onAdd }) {
       onAdd(data);
 
       setTitle("");
-      setDueDate("");
+      setDueDate(getTodayDateInputValue());
       setDueTime("");
       setPriority("Medium");
       setCategory("Personal");
@@ -81,7 +90,7 @@ export default function TaskForm({ onAdd }) {
           setTitle(event.target.value);
           setError("");
         }}
-        placeholder="What's on your mind? Add a task..."
+        placeholder="Add a new task..."
         maxLength={200}
         disabled={loading}
         aria-label="New task title"
@@ -91,7 +100,7 @@ export default function TaskForm({ onAdd }) {
 
       <div className="task-deadline-fields">
         <label className="task-deadline-field">
-          <span>Due date</span>
+          <span className="visually-hidden">Due date</span>
           <input
             type="date"
             value={dueDate}
@@ -103,9 +112,10 @@ export default function TaskForm({ onAdd }) {
             aria-label="Task due date"
           />
         </label>
-
-        <label className="task-deadline-field">
-          <span>Due time (optional)</span>
+        <label
+          className="task-deadline-field task-time-field"
+        >
+          <span className="visually-hidden">Due time (optional)</span>
           <input
             type="time"
             value={dueTime}
@@ -114,14 +124,14 @@ export default function TaskForm({ onAdd }) {
               setError("");
             }}
             disabled={loading}
-            aria-label="Task due time"
+            aria-label="Task due time (optional)"
           />
         </label>
       </div>
 
       <div className="task-category-priority-fields">
         <label className="task-deadline-field task-priority-field">
-          <span>Priority</span>
+          <span className="visually-hidden">Priority</span>
           <select
             value={priority}
             onChange={(event) => {
@@ -138,7 +148,7 @@ export default function TaskForm({ onAdd }) {
         </label>
 
         <label className="task-deadline-field task-category-field">
-          <span>Category</span>
+          <span className="visually-hidden">Category</span>
           <select
             value={category}
             onChange={(event) => {

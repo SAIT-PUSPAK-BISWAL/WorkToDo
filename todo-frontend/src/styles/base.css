@@ -1,0 +1,156 @@
+/* =========================================================
+   WORK TO DO — PASTEL WORKSPACE
+   ========================================================= */
+
+:root {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #29291f;
+  background: #faf8f1;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --paper: #fffdf7;
+  --paper-warm: #fff9e7;
+  --paper-yellow: #fff0a9;
+  --yellow: #ffd85a;
+  --yellow-deep: #efbd28;
+  --ink: #29291f;
+  --muted: #77766e;
+  --border: #e9e3d5;
+  --green: #3e8056;
+  --red: #bd4941;
+  --shadow: 0 8px 25px rgba(57, 48, 17, 0.065);
+  --small-text: 13px;
+  --base-text: 14px;
+  --large-text: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 224, 111, 0.15), transparent 36%),
+    #faf8f1;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--base-text);
+  line-height: 1.5;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(217, 171, 27, 0.48);
+  outline-offset: 3px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #e1dbcf;
+  border-radius: 10px;
+  background: #fffefa;
+  color: var(--ink);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #99968a;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #d9ad25;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 207, 69, 0.18);
+}
+
+label {
+  color: #514b3b;
+  font-size: calc(12px * var(--text-scale, 1));
+  font-weight: 650;
+}
+
+[role="alert"] {
+  color: #b42318;
+  font-size: calc(12px * var(--text-scale, 1));
+}
+
+/* Shared buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 17px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--yellow);
+  color: #302a17;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(76, 60, 10, 0.07);
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--yellow-deep);
+  box-shadow: 0 5px 12px rgba(76, 60, 10, 0.12);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  border-color: #e4ded1;
+  background: rgba(255, 253, 247, 0.9);
+  box-shadow: none;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f7f0dd;
+}
+
+.btn-danger {
+  background: #fff0ed;
+  color: var(--red);
+  box-shadow: none;
+}
+

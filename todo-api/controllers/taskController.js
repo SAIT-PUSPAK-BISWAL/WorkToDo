@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 const Task = require("../models/task");
+const { logSecurityEvent } = require("../utils/securityLog");
 
 const ALLOWED_PRIORITIES = ["Low", "Medium", "High"];
 const ALLOWED_CATEGORIES = [
@@ -158,7 +159,7 @@ exports.createTask = async (req, res) => {
       });
     }
 
-    console.error("Create task error:", err.message);
+    logSecurityEvent("task.create.error", req, { errorType: err.name, userId: req.user.id });
 
     return res.status(500).json({
       message: "Server error while creating task",
@@ -175,7 +176,7 @@ exports.getTasks = async (req, res) => {
 
     return res.json(tasks);
   } catch (err) {
-    console.error("Get tasks error:", err.message);
+    logSecurityEvent("task.list.error", req, { errorType: err.name, userId: req.user.id });
 
     return res.status(500).json({
       message: "Server error while retrieving tasks",
@@ -302,7 +303,7 @@ exports.updateTask = async (req, res) => {
       });
     }
 
-    console.error("Update task error:", err.message);
+    logSecurityEvent("task.update.error", req, { errorType: err.name, userId: req.user.id });
 
     return res.status(500).json({
       message: "Server error while updating task",
@@ -334,7 +335,7 @@ exports.deleteTask = async (req, res) => {
       message: "Task deleted",
     });
   } catch (err) {
-    console.error("Delete task error:", err.message);
+    logSecurityEvent("task.delete.error", req, { errorType: err.name, userId: req.user.id });
 
     return res.status(500).json({
       message: "Server error while deleting task",

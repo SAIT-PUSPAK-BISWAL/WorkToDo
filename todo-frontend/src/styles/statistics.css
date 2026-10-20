@@ -1,0 +1,123 @@
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 15px;
+  margin: 0 0 24px;
+}
+
+.stat-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  min-height: 90px;
+  overflow: hidden;
+  padding: 15px 17px;
+  border: 1px solid #f1df9c;
+  border-radius: 12px;
+  background: #fff1b8;
+  box-shadow: 0 3px 9px rgba(57, 48, 17, 0.035);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 15px rgba(57, 48, 17, 0.075);
+}
+
+.stat-total,
+.stat-due {
+  border-color: #f3df8d;
+  background: linear-gradient(120deg, #fff1b8, #fff6d5);
+}
+
+.stat-progress {
+  border-color: #f3df8d;
+  background: linear-gradient(120deg, #fff1b8, #fff6d5);
+}
+
+.stat-completed {
+  border-color: #d0e5c5;
+  background: linear-gradient(120deg, #e4f0dc, #edf4e4);
+}
+
+.stat-overdue {
+  border-color: #f5c9c4;
+  background: linear-gradient(120deg, #ffe0df, #ffebea);
+}
+
+.stat-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 12px;
+  background: #f7c334;
+  color: #fff;
+  font-size: calc(24px * var(--text-scale, 1));
+  font-weight: 800;
+}
+
+.stat-progress .stat-icon {
+  background: #f7c334;
+}
+
+.stat-completed .stat-icon {
+  border-radius: 50%;
+  background: #5eb17a;
+}
+
+.stat-overdue .stat-icon {
+  border-radius: 50%;
+  background: #e85d5b;
+}
+
+.stat-card > div {
+  min-width: 0;
+}
+
+.stat-label {
+  margin: 0;
+  color: #4d4738;
+  font-size: calc(12px * var(--text-scale, 1));
+  font-weight: 600;
+}
+
+.stat-value {
+  display: block;
+  margin-top: 3px;
+  font-size: calc(25px * var(--text-scale, 1));
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+.stat-doodle {
+  position: absolute;
+  right: 11px;
+  bottom: 4px;
+  color: #e7a91d;
+  font-family: "Comic Sans MS", cursive;
+  font-size: calc(30px * var(--text-scale, 1));
+  opacity: 0.95;
+  transform: rotate(10deg);
+}
+
+.stat-progress .stat-doodle {
+  color: #e7a91d;
+}
+
+.stat-completed .stat-doodle {
+  color: #56a676;
+}
+
+.stat-overdue .stat-doodle {
+  color: #e65f5a;
+}
+

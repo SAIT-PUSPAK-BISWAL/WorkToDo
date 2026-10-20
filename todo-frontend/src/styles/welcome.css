@@ -1,0 +1,117 @@
+/* =========================================================
+   DASHBOARD AND WELCOME
+   ========================================================= */
+
+.dashboard {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  font-size: calc(14px * var(--text-scale, 1));
+  background:
+    radial-gradient(ellipse at 7% 8%, rgba(255, 220, 103, 0.09), transparent 28%),
+    #faf8f1;
+  color: var(--ink);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.auth-checking {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background: #faf8f1;
+  color: #514b3b;
+  font-size: 15px;
+}
+
+.workspace-content {
+  width: min(100%, 1740px);
+  margin: 0 auto;
+  padding: 27px clamp(18px, 4.8vw, 76px) 30px;
+}
+
+.welcome-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 26px;
+}
+
+.dashboard-eyebrow {
+  margin: 0 0 7px;
+  color: #39382f;
+  font-size: calc(11px * var(--text-scale, 1));
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.dashboard-title {
+  margin: 0;
+  color: #29291f;
+  font-family: "Comic Sans MS", "Segoe Print", "Trebuchet MS", sans-serif;
+  font-size: calc(clamp(29px, 3vw, 40px) * var(--text-scale, 1));
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+}
+
+.title-spark {
+  display: inline-block;
+  margin-left: 5px;
+  color: #efb000;
+  font-family: Arial, sans-serif;
+  font-size: calc(24px * var(--text-scale, 1));
+  vertical-align: middle;
+}
+
+.dashboard-subtitle {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: calc(13px * var(--text-scale, 1));
+  line-height: 1.6;
+}
+
+.welcome-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.welcome-actions .btn {
+  min-height: 47px;
+  padding-inline: 20px;
+  white-space: nowrap;
+}
+
+.add-task-jump {
+  min-width: 165px;
+  font-size: calc(15px * var(--text-scale, 1));
+}
+
+.add-task-jump > span {
+  font-size: calc(24px * var(--text-scale, 1));
+  font-weight: 400;
+  line-height: 1;
+}
+
+.handwritten-note {
+  position: relative;
+  margin: 0 12px 0 0;
+  transform: rotate(-5deg);
+  color: #858477;
+  font-family: "Comic Sans MS", "Segoe Print", cursive;
+  font-size: calc(13px * var(--text-scale, 1));
+  line-height: 1.35;
+}
+
+.handwritten-note span {
+  position: absolute;
+  top: -17px;
+  right: -45px;
+  transform: rotate(-25deg);
+  font-family: Arial, sans-serif;
+  font-size: calc(36px * var(--text-scale, 1));
+}
+
