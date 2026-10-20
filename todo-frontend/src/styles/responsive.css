@@ -1,0 +1,335 @@
+/* Layout adjustments for phones and small tablets. */
+
+@media (max-width: 1050px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .task-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-nav {
+    gap: 16px;
+    padding-inline: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  html {
+    scroll-padding-top: 112px;
+  }
+
+  .app-nav {
+    flex-wrap: wrap;
+    gap: 7px 12px;
+    min-height: 0;
+    padding: 9px 14px 7px;
+  }
+
+  .brand-note {
+    padding: 4px 10px 6px;
+    font-size: calc(22px * var(--text-scale, 1));
+  }
+
+  .nav-tools {
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .text-size-control {
+    gap: 1px;
+    padding: 3px;
+  }
+
+  .text-size-control > span {
+    display: none;
+  }
+
+  .text-size-control button {
+    width: 27px;
+    height: 29px;
+  }
+
+  .theme-toggle {
+    width: 35px;
+    height: 35px;
+    flex-basis: 35px;
+  }
+
+  .profile-avatar {
+    width: 35px;
+    height: 35px;
+  }
+
+  .profile-menu-trigger {
+    width: 20px;
+  }
+
+  .nav-links {
+    order: 3;
+    justify-content: space-between;
+    width: 100%;
+    gap: 4px;
+  }
+
+  .nav-link {
+    flex: 1 1 0;
+    min-height: 36px;
+    gap: 6px;
+    padding: 7px 6px;
+    font-size: calc(12px * var(--text-scale, 1));
+  }
+
+  .workspace-content {
+    padding: 20px 16px 28px;
+  }
+
+  .welcome-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .welcome-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .handwritten-note {
+    display: none;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    margin-bottom: 17px;
+  }
+
+  .stat-card {
+    min-height: 76px;
+    gap: 9px;
+    padding: 10px;
+  }
+
+  .stat-icon {
+    width: 32px;
+    height: 32px;
+    font-size: calc(20px * var(--text-scale, 1));
+  }
+
+  .stat-value {
+    font-size: calc(21px * var(--text-scale, 1));
+  }
+
+  .stat-doodle {
+    right: 5px;
+    bottom: 1px;
+    font-size: calc(22px * var(--text-scale, 1));
+  }
+
+  .task-toolbar {
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 17px;
+  }
+
+  .task-search-controls {
+    flex-basis: 100%;
+  }
+
+  .task-filters {
+    flex: 1 1 auto;
+    gap: 6px;
+  }
+
+  .filter-button {
+    min-height: 35px;
+    padding: 7px 11px;
+  }
+
+  .toolbar-popover {
+    margin-left: auto;
+  }
+
+  .workspace-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 17px;
+  }
+
+  .daily-planner-panel {
+    padding: 16px 13px;
+  }
+
+  .planner-time-groups {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .planner-time-card {
+    min-height: 58px;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .planner-time-icon {
+    width: 24px;
+    font-size: calc(22px * var(--text-scale, 1));
+  }
+
+  .planner-time-arrow {
+    display: none;
+  }
+
+  .composer-wrap {
+    padding: 11px;
+  }
+
+  .task-composer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .task-composer .task-title-input,
+  .task-composer .task-deadline-fields,
+  .task-composer .task-category-priority-fields,
+  .task-composer > .btn,
+  .task-composer .task-form-error {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .task-composer .task-deadline-fields,
+  .task-composer .task-category-priority-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .task-composer > .btn {
+    min-height: 43px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-nav {
+    padding-inline: 10px;
+  }
+
+  .brand-note {
+    padding-inline: 8px;
+    font-size: calc(19px * var(--text-scale, 1));
+  }
+
+  .nav-tools {
+    gap: 5px;
+  }
+
+  .text-size-control button {
+    width: 24px;
+  }
+
+  .profile-menu {
+    right: -3px;
+    width: min(220px, calc(100vw - 20px));
+  }
+
+  .workspace-content {
+    padding: 17px 12px 24px;
+  }
+
+  .dashboard-title {
+    font-size: calc(29px * var(--text-scale, 1));
+  }
+
+  .welcome-actions .btn {
+    flex: 1 1 auto;
+    min-height: 43px;
+    padding-inline: 12px;
+  }
+
+  .add-task-jump {
+    min-width: 0;
+  }
+
+  .stat-card {
+    min-height: 70px;
+    padding: 8px;
+  }
+
+  .stat-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .stat-label {
+    font-size: calc(10px * var(--text-scale, 1));
+  }
+
+  .stat-value {
+    font-size: calc(19px * var(--text-scale, 1));
+  }
+
+  .task-filters {
+    width: 100%;
+  }
+
+  .filter-button {
+    flex: 1 1 auto;
+    padding-inline: 8px;
+    font-size: calc(11px * var(--text-scale, 1));
+  }
+
+  .filters-toggle {
+    min-height: 36px;
+  }
+
+  .planner-heading {
+    gap: 6px;
+  }
+
+  .planner-heading h2 {
+    font-size: calc(18px * var(--text-scale, 1));
+  }
+
+  .planner-time-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .planner-time-card {
+    min-height: 52px;
+  }
+
+  .task-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .task-card {
+    min-height: 175px;
+  }
+
+  .login-page {
+    justify-content: flex-start;
+    padding: 96px 14px 32px;
+  }
+
+  .login-header {
+    top: 18px;
+  }
+
+  .login-brand {
+    gap: 8px;
+    font-size: 22px;
+  }
+
+  .login-card {
+    padding: 28px 20px;
+    border-radius: 18px;
+  }
+
+  .login-subtitle {
+    margin-bottom: 22px;
+  }
+}
